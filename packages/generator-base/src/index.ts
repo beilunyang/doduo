@@ -1,14 +1,12 @@
-import { Question, Answers } from "inquirer";
+import { Answers, Question } from "inquirer";
+import GeneratorContext from "./context";
 
-export interface IGenerator {
-  answers: Answers;
-  prompts: Question[];
-  prepare(): any;
-  completed(): any;
-}
+export abstract class BaseGenerator {
+  app: GeneratorContext;
 
-export class BaseGenerator implements IGenerator {
-  answers = {};
+  constructor(projectName: string, sourceRoot: string, answers?: Answers) {
+    this.app = new GeneratorContext(projectName, sourceRoot, answers);
+  }
 
   prompts = <Question[]>[];
 

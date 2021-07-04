@@ -42,7 +42,7 @@ class Command {
         },
       },
     ]);
-    generatorManager.exec(generatorName);
+    generatorManager.exec(generatorName, projectName);
   }
 
   async install(repo?: string) {
@@ -63,6 +63,16 @@ class Command {
       repo = answer.repo;
     }
     generatorManager.install(repo);
+  }
+
+  async list() {
+    let list: any = await generatorManager.list();
+    list = list.map((item: string) => {
+      return {
+        生成器名: item,
+      };
+    });
+    console.table(list);
   }
 
   publish() {}

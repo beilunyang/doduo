@@ -1,0 +1,134 @@
+const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const createCssConfig = env => {
+  const cssUse = ['postcss-loader', 'sass-loader'];
+  const loaderConfig = [
+    {
+      test: /\.s?css$/,
+      exclude: /\.m\.s?css$/,
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            esModule: true
+          }
+        },
+        ...cssUse
+      ]
+    },
+    {
+      test: /\.m\.s?css$/,
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            esModule: true,
+            modules: {
+              localIdentName: '[local]--[hash:base64:10]'
+            }
+          }
+        },
+        ...cssUse
+      ]
+    }
+  ];
+  const pluginConfig = [];
+  if (env === 'production') {
+    loaderConfig.forEach(config => {
+      config.use.unshift({
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          esModule: true
+        }
+      });
+    });
+    pluginConfig.push(
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css',
+        ignoreOrder: false
+      })
+    );
+  } else {
+    loaderConfig.forEach(config => {
+      config.use.unshift({
+        loader: 'style-loader',
+        options: {
+          esModule: true
+        }
+      });
+    });
+  }
+
+  return {
+    module: {
+      rules: loaderConfig
+    },
+    plugins: pluginConfig
+  };
+};
+
+const createBaseConfig = env => {
+  const cssConfig = createCssConfig(env);
+  return merge(cssConfig, {
+    entry: path.resolve('src/index.js'),
+    output: {
+      filename: '[name].js',
+      path: path.resolve('build')
+    },
+    resolve: {
+      extensions: ['.js', '.jsx', '.json'],
+      alias: {
+        '@': path.resolve('src')
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          use: [
+            'babel-loader',
+            {
+              loader: 'eslint-loader',
+              options: {
+                fix: true
+              }
+            }
+          ],
+          exclude: path.resolve('node_modules')
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg|webp|ttf|woff|eot)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                esModule: false,
+                name: '[name]-[hash:6].[ext]'
+              }
+            }
+          ],
+        }
+      ]
+    },
+    plugins: [
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        title: '扫码下单',
+        template: path.resolve('src/index.html')
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        }
+      })
+    ]
+  });
+};
+
+module.exports = createBaseConfig;

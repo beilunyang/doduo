@@ -23,9 +23,10 @@ class GeneratorReact extends BaseGenerator {
     console.log("completed:", this.answers);
   }
 
-  useTs(answer) {
+  async useTs(answer) {
     if (answer) {
       console.log("useTs");
+      await this.app.copyTpl();
     }
   }
 

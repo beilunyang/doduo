@@ -8,12 +8,11 @@ import { filterGeneratorName } from "./util";
 const readdir = util.promisify(fs.readdir);
 
 class GeneratorManager {
-  prefixs = ["ditto-", "@ditto/"];
+  private depPath = path.join(__dirname, "../node_modules");
+  private prefixs = ["ditto-", "@ditto/"];
 
   async list(): Promise<string[]> {
-    const dirs: string[] = await readdir(
-      path.join(__dirname, "../node_modules")
-    );
+    const dirs: string[] = await readdir(this.depPath);
     const generatorNames: string[] = [];
     dirs.forEach((name: string) => {
       const regx = new RegExp(`^${this.prefixs[0]}(.+)$`);
@@ -23,7 +22,7 @@ class GeneratorManager {
       }
     });
     const officialGeneratorNames = (
-      await readdir(path.join(__dirname, `../node_modules/${this.prefixs[1]}`))
+      await readdir(path.join(this.depPath, this.prefixs[1]))
     ).map((name) => `${this.prefixs[1]}${name}`);
     return [...filterGeneratorName(officialGeneratorNames), ...generatorNames];
   }
@@ -32,19 +31,19 @@ class GeneratorManager {
     spawn.sync("npm", ["install", repo], { stdio: "inherit" });
   }
 
-  async exec(generatorName: string) {
+  async exec(generatorName: string, projectName: string) {
     const Generator = require(generatorName);
-    const generator = new Generator();
+    const sourceRoot = path.join(this.depPath, generatorName);
+    const generator = new Generator(projectName, sourceRoot);
     await generator?.prepare?.();
     const { prompts } = generator;
     if (Array.isArray(prompts)) {
       const answers = await inquirer.prompt(prompts);
-      generator.answers = answers;
-      prompts.forEach(({ name }) => {
+      generator.app.answers = answers;
+      for (const { name } of prompts) {
         const answer = answers[name];
-        generator[name](answer);
-      });
-      console.log("all answers:", answers);
+        await generator[name](answer);
+      }
     }
     await generator?.completed?.();
   }

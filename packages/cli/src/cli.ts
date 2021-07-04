@@ -11,7 +11,12 @@ class CLI {
       .version(pkg.version, "-v, --version", "显示ditto版本号")
       .description("一套脚手架CLI工具")
       .helpOption("-h, --help", "显示帮助信息")
-      .option("-l, --list", "显示所有本地已安装的生成器");
+      .option("-l, --list", "");
+
+    program
+      .command("list")
+      .description("显示所有本地已安装的生成器")
+      .action(() => command.list());
 
     program
       .command("create [projectName]", { isDefault: true })
