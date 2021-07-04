@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <script>
+      (function rem() {
+        var de = document.documentElement;
+        var resizeEvent =
+          'orientationchange' in window ? 'orientationchange' : 'resize';
+        var recalc = function() {
+          var clientWidth = de.clientWidth > 640 ? 375 : de.clientWidth;
+          if (!clientWidth) return;
+          var base = 37.5 * (clientWidth / 375);
+          de.style.fontSize = base + 'px';
+        };
+        window.addEventListener(resizeEvent, recalc, false);
+        recalc();
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="modal-root"></div>
+  </body>
+</html>
