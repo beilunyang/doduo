@@ -1,7 +1,7 @@
 {
   "name": "@ditto/generator-base",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "ditto生成器基础类-用于开发ditto生成器",
   "author": "beilunyang <786220806@qq.com>",
   "homepage": "",
   "license": "ISC",
@@ -10,6 +10,7 @@
     "build": "tsc",
     "dev": "tsc -w"
   },
+  "files": ["lib"],
   "dependencies": {
     "chalk": "^4.1.1",
     "concurrently": "^6.2.0",

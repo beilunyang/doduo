@@ -1,7 +1,7 @@
 {
   "name": "@ditto/generator-react",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "ditto react生成器",
   "author": "beilunyang <786220806@qq.com>",
   "homepage": "",
   "license": "ISC",

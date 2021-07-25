@@ -1,7 +1,7 @@
 {
   "name": "@ditto/cli",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "一套轻量的脚手架CLI框架",
   "author": "beilunyang <786220806@qq.com>",
   "homepage": "",
   "license": "ISC",
