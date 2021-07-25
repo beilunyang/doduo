@@ -19,6 +19,9 @@
     "build": "tsc",
     "dev": "tsc -w"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
     "@types/inquirer": "^7.3.2",

@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest 
     permissions: 
       contents: read
@@ -19,7 +19,7 @@ jobs:
       - run: npx lerna bootstrap
       - run: npx lerna run build 
       # Publish to npm
-      - run: npm publish --access public
+      - run: npx lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # Setup .npmrc file to publish to GitHub Packages
@@ -29,6 +29,6 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: '@beilunyang'
       # Publish to GitHub Packages
-      - run: npm publish
+      - run: npx lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
