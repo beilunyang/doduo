@@ -40,10 +40,7 @@ class GeneratorManager {
     if (Array.isArray(prompts)) {
       const answers = await inquirer.prompt(prompts);
       generator.app.answers = answers;
-      for (const { name } of prompts) {
-        const answer = answers[name];
-        await generator[name](answer);
-      }
+      await generator.run(answers);
     }
     await generator?.completed?.();
   }
