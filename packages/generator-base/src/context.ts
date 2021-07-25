@@ -36,19 +36,29 @@ export default class GeneratorContext {
             _: any,
             callback: () => void
           ) {
+            const filterResult = filter?.(item.path);
+            if (filterResult) {
+              callback();
+              return;
+            }
             try {
-              const filterResult = filter?.(item.path);
-              if (filterResult) {
-                callback();
-                return;
-              }
               await fs.ensureFile(item.path);
-              const data = await ejs.renderFile(item.path, { ...self });
-              this.push({
-                filePath: item.path,
-                data,
-              });
-            } catch (err) {}
+            } catch (err) {
+              callback();
+              return;
+            }
+            const realPath = item.path.match(/^(.+)\.ejs$/)?.[1];
+            const isTpl = !!realPath;
+            let data = null;
+            if (isTpl) {
+              data = await ejs.renderFile(item.path, self);
+            } else {
+              data = await fs.readFile(item.path);
+            }
+            this.push({
+              filePath: realPath || item.path,
+              data,
+            });
             callback();
           })
         )
