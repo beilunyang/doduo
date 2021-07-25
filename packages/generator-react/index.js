@@ -18,6 +18,13 @@ class GeneratorReact extends BaseGenerator {
       name: "install",
       message: "是否立即安装依赖",
     },
+    {
+      type: "list",
+      name: "pkg",
+      message: "需要使用哪种包管理工具安装",
+      choices: ["npm", "yarn"],
+      when: (answers) => answers.install,
+    },
   ];
 
   async run(answers) {
@@ -29,8 +36,12 @@ class GeneratorReact extends BaseGenerator {
         }
       },
     });
-    if (answers.install) {
-      this.app.npmInstall();
+    switch (answers.pkg) {
+      case "npm":
+        this.app.npmInstall();
+        break;
+      case "yarn":
+        this.app.yarnInstall();
     }
   }
 }
