@@ -11,28 +11,26 @@ class GeneratorReact extends BaseGenerator {
       type: "list",
       name: "cssTool",
       message: "需要使用哪种CSS工具",
-      choices: ["css", "scss", "less", "postcss", "tailwindcss"],
+      choices: ["scss", "tailwindcss"],
+    },
+    {
+      type: "confirm",
+      name: "install",
+      message: "是否立即安装依赖",
     },
   ];
 
-  prepare() {
-    console.log("prepare");
-  }
-
-  completed() {
-    console.log("completed:", this.answers);
-  }
-
-  async useTs(answer) {
-    if (answer) {
-      console.log("useTs");
-      await this.app.copyTpl();
-    }
-  }
-
-  cssTool(answer) {
-    if (answer) {
-      console.log("使用cssTool:", answer);
+  async run(answers) {
+    await this.app.copyTpl({
+      filter: (path) => {
+        const regx = /tailwind.+$/;
+        if (answers.cssTool !== "tailwindcss") {
+          return regx.test(path);
+        }
+      },
+    });
+    if (answers.install) {
+      this.app.npmInstall();
     }
   }
 }

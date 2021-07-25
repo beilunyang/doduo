@@ -1,4 +1,4 @@
-import Index from './pages/index';
+import Index from '@/pages/index';
 
 export default [
   {
@@ -8,5 +8,5 @@ export default [
     meta: {
       title: '首页'
     }
-  },
+  }
 ];

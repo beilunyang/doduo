@@ -1,12 +1,11 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-// const internalIp = require('internal-ip');
+const { merge } = require('webpack-merge');
 const createBaseConfig = require('./webpack.config.base');
 
 const env = 'development';
 
 const devConfig = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'eval',
   mode: env,
   devServer: {
     host: '127.0.0.1',
@@ -21,7 +20,7 @@ const devConfig = {
     index: 'index.html',
     proxy: {
       '/api': {
-        target: 'http://test-order.wuyou.stosystem.com',
+        target: '',
         changeOrigin: true,
         historyApiFallback: true,
         secure: false,

@@ -1,11 +1,10 @@
+<%_ if (answers.cssTool === 'tailwindcss') { _%>
+import './tailwind.css'
+<%_ } else { _%>
 import 'normalize.css';
-import '@/common/css/base.scss';
+<%_ } _%>
 import React from 'react';
 import ReactDOM from 'react-dom';
-import initReactFastclick from 'react-fastclick';
 import App from './App';
-
-
-initReactFastclick();
 
 ReactDOM.render(<App />, document.getElementById('app'));

@@ -1,12 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const createCssConfig = env => {
-  const cssUse = ['postcss-loader', 'sass-loader'];
+  const cssUse = [
+    'postcss-loader',
+    <%_ if (answers.cssTool === "scss") { _%>
+    'sass-loader'
+    <%_ } _%>
+  ];
+  <%_ if (answers.cssTool === "scss") { _%>
   const loaderConfig = [
     {
       test: /\.s?css$/,
@@ -37,6 +43,23 @@ const createCssConfig = env => {
       ]
     }
   ];
+  <%_ } _%>
+  <%_ if (answers.cssTool === "tailwindcss") { _%>
+  const loaderConfig = [
+    {
+      test: /\.css$/,
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            esModule: true,
+          }
+        },
+        ...cssUse
+      ],
+    }
+  ];
+  <%_ } _%>
   const pluginConfig = [];
   if (env === 'production') {
     loaderConfig.forEach(config => {
@@ -112,20 +135,18 @@ const createBaseConfig = env => {
                 name: '[name]-[hash:6].[ext]'
               }
             }
-          ],
+          ]
         }
       ]
     },
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        title: '扫码下单',
+        title: '<%= projectName %>',
         template: path.resolve('src/index.html')
       }),
       new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-        }
+        'process.env.CURRENT_ENV': JSON.stringify(process.env.CURRENT_ENV)
       })
     ]
   });

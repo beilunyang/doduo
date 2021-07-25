@@ -1,8 +1,6 @@
 import React from 'react';
 import { Switch, HashRouter, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import routesConfig from './routes';
-import store from '@/rematch';
 
 export default function App() {
   const routes = routesConfig.map(config => (
@@ -17,10 +15,8 @@ export default function App() {
     />
   ));
   return (
-    <Provider store={store}>
-        <HashRouter>
-          <Switch>{routes}</Switch>
-        </HashRouter>
-    </Provider>
+    <HashRouter>
+      <Switch>{routes}</Switch>
+    </HashRouter>
   );
 }
