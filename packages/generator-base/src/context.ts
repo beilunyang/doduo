@@ -4,6 +4,8 @@ import fs from "fs-extra";
 import ejs from "ejs";
 import klaw from "klaw";
 import through2 from "through2";
+import concurrently, { Options } from "concurrently";
+import chalk from "chalk";
 
 export default class GeneratorContext {
   constructor(
@@ -43,6 +45,7 @@ export default class GeneratorContext {
         .pipe(
           through2.obj(function (item: any, _: any, callback: () => void) {
             fs.outputFile(item.filePath, item.data);
+            self.log(`copy file to ${item.filePath}`);
             callback();
           })
         )
@@ -51,9 +54,25 @@ export default class GeneratorContext {
     });
   }
 
-  addFile() {}
+  execShell(cmds: string[] | string, options?: Options) {
+    if (typeof cmds === "string") {
+      cmds = [cmds];
+    }
+    concurrently(cmds, {
+      cwd: this.projectPath,
+      ...options,
+    });
+  }
 
-  modifyFile() {}
+  npmInstall() {
+    this.execShell("npm install");
+  }
 
-  removeFile() {}
+  yarnInstall() {
+    this.execShell("yarn");
+  }
+
+  log(message: string) {
+    console.log(chalk.green(message));
+  }
 }
