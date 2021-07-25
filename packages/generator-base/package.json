@@ -10,7 +10,9 @@
     "build": "tsc",
     "dev": "tsc -w"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "chalk": "^4.1.1",
     "concurrently": "^6.2.0",
