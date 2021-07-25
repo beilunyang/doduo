@@ -7,6 +7,11 @@ import through2 from "through2";
 import concurrently, { Options } from "concurrently";
 import chalk from "chalk";
 
+interface ICopyTplOptions {
+  src?: string;
+  filter?: (path: string) => boolean;
+}
+
 export default class GeneratorContext {
   constructor(
     public projectName: string,
@@ -18,13 +23,13 @@ export default class GeneratorContext {
 
   private projectPath = path.resolve("./", this.projectName);
 
-  async copyTpl(src: string = "") {
+  async copyTpl(options: ICopyTplOptions = {}) {
     const self = this;
+    const { src = "", filter } = options;
     const srcPath = path.join(this.templatePath, src);
     const targetPath = path.join(this.projectPath, src);
-    await fs.copy(srcPath, targetPath);
     return new Promise<void>((resolve, reject) => {
-      klaw(targetPath)
+      klaw(srcPath)
         .pipe(
           through2.obj(async function (
             item: any,
@@ -32,6 +37,11 @@ export default class GeneratorContext {
             callback: () => void
           ) {
             try {
+              const filterResult = filter?.(item.path);
+              if (filterResult) {
+                callback();
+                return;
+              }
               await fs.ensureFile(item.path);
               const data = await ejs.renderFile(item.path, { ...self });
               this.push({
@@ -44,8 +54,9 @@ export default class GeneratorContext {
         )
         .pipe(
           through2.obj(function (item: any, _: any, callback: () => void) {
-            fs.outputFile(item.filePath, item.data);
-            self.log(`copy file to ${item.filePath}`);
+            const outputPath = item.filePath.replace(srcPath, targetPath);
+            self.log(`copy file to ${outputPath}`);
+            fs.outputFile(outputPath, item.data);
             callback();
           })
         )
