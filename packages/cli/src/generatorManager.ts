@@ -9,7 +9,7 @@ const readdir = util.promisify(fs.readdir);
 
 class GeneratorManager {
   private depPath = path.join(__dirname, "../node_modules");
-  private prefixs = ["ditto-", "@ditto/"];
+  private prefixs = ["doduo-", "@doduo/"];
 
   async list(): Promise<string[]> {
     const dirs: string[] = await readdir(this.depPath);

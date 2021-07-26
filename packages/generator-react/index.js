@@ -1,4 +1,4 @@
-const { BaseGenerator } = require("@ditto/generator-base");
+const { BaseGenerator } = require("@doduo/generator-base");
 
 class GeneratorReact extends BaseGenerator {
   prompts = [

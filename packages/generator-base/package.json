@@ -1,7 +1,7 @@
 {
-  "name": "@ditto/generator-base",
+  "name": "@doduo/generator-base",
   "version": "0.1.0",
-  "description": "ditto生成器基础类-用于开发ditto生成器",
+  "description": "doduo生成器基础类-用于开发doduo生成器",
   "author": "beilunyang <786220806@qq.com>",
   "homepage": "",
   "license": "ISC",

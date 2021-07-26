@@ -8,8 +8,8 @@ class CLI {
   run() {
     const program = new Command();
     program
-      .version(pkg.version, "-v, --version", "显示ditto版本号")
-      .description("一套脚手架CLI工具")
+      .version(pkg.version, "-v, --version", `显示doduo版本号`)
+      .description("轻量级脚手架CLI工具")
       .helpOption("-h, --help", "显示帮助信息")
       .option("-l, --list", "");
 

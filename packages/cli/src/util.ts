@@ -3,6 +3,6 @@ export const isGitRepoURL = (url: string): boolean => {
 };
 
 export const filterGeneratorName = (names: string[]) => {
-  const blackNames = ["@ditto/generator-base", "@ditto/cli"];
+  const blackNames = ["@doduo/generator-base", "@doduo/cli"];
   return names.filter((name) => blackNames.indexOf(name) === -1);
 };

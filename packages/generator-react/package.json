@@ -1,7 +1,7 @@
 {
-  "name": "@ditto/generator-react",
+  "name": "@doduo/generator-react",
   "version": "0.1.0",
-  "description": "ditto react生成器",
+  "description": "doduo react生成器",
   "author": "beilunyang <786220806@qq.com>",
   "homepage": "",
   "license": "ISC",
@@ -13,6 +13,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@ditto/generator-base": "^0.1.0"
+    "@doduo/generator-base": "^0.1.0"
   }
 }

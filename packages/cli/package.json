@@ -1,5 +1,5 @@
 {
-  "name": "@ditto/cli",
+  "name": "@doduo/cli",
   "version": "0.1.0",
   "description": "一套轻量的脚手架CLI框架",
   "author": "beilunyang <786220806@qq.com>",
@@ -9,8 +9,9 @@
     "lib": "lib"
   },
   "bin": {
-    "dt": "lib/cli.js",
-    "ditto": "lib/cli.js"
+    "do": "lib/cli.js",
+    "duo": "lib/cli.js",
+    "doduo": "lib/cli.js"
   },
   "files": [
     "lib"
