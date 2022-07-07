@@ -31,7 +31,7 @@ Commands:
 
 ## 生成器
 目前仅提供了react生成器
+```bash
 duo install @doduo/generator-react
+```
 
-## 生成器开发
-TODO:
